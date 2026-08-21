@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ChainBridge — Trust Across Every Transaction</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:#f5f7fb;color:#101828}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.app{display:flex;min-height:100vh}
+.sidebar{width:235px;background:#07111f;color:#dbe7f5;padding:22px 15px;display:flex;flex-direction:column}
+.logo{font-weight:800;font-size:21px;display:flex;align-items:center;gap:10px;margin-bottom:30px}.logoMark{width:34px;height:34px;border:3px solid #2684ff;border-radius:10px;transform:rotate(45deg);display:grid;place-items:center}.logoMark span{width:13px;height:13px;background:#2684ff;border-radius:3px}
+.nav button{width:100%;padding:12px 13px;background:transparent;color:#a9bad0;text-align:left;border-radius:10px;margin:3px 0}.nav button.active,.nav button:hover{background:#12243b;color:white}
+.account{margin-top:auto;background:#0e2035;padding:12px;border-radius:12px;font-size:13px}.account strong{display:block;color:white}
+.main{flex:1;min-width:0}.top{height:70px;background:white;border-bottom:1px solid #e5eaf0;display:flex;align-items:center;justify-content:space-between;padding:0 28px}.top h1{font-size:20px;margin:0}.top span{color:#667085;font-size:13px}
+.content{padding:28px;max-width:1450px;margin:auto}.hero{background:linear-gradient(115deg,#07111f,#0b2b55 65%,#1267d8);color:white;border-radius:20px;padding:28px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:420px;height:420px;border:1px solid #4aa1ff55;border-radius:50%;right:-120px;top:-210px;box-shadow:0 0 80px #2684ff55}.hero h2{font-size:32px;margin:0 0 8px}.hero p{color:#c8dcf4;max-width:650px}.btn{background:#1677ff;color:white;border-radius:9px;padding:11px 16px;font-weight:700}.btn.secondary{background:white;color:#1267d8}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}.card{background:white;border:1px solid #e5eaf0;border-radius:14px;padding:18px}.stat small{color:#667085}.stat strong{font-size:26px;display:block;margin:7px 0}.up{color:#039855;font-size:12px}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.sectionTitle h3{margin:0;font-size:16px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px 8px;border-bottom:1px solid #edf0f4}th{color:#667085;font-weight:600}.pill{padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700;background:#ecfdf3;color:#027a48}.pill.pending{background:#fffaeb;color:#b54708}.product{min-height:145px}.product h4{margin:10px 0 6px}.product p{color:#667085;font-size:13px;line-height:1.5}
+.cartBadge{display:inline-flex;min-width:22px;height:22px;padding:0 6px;align-items:center;justify-content:center;background:#1677ff;color:#fff;border-radius:999px;font-size:11px;font-weight:800;margin-left:5px}.productImg{height:150px;border-radius:12px;background:linear-gradient(135deg,#dff0ff,#eef7ff);display:grid;place-items:center;font-size:48px;margin-bottom:12px}.price{font-size:21px;font-weight:800;margin:8px 0}.storeGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.storeCard{overflow:hidden}.storeCard p{min-height:42px}.cartItem{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #edf0f4}.cartIcon{width:48px;height:48px;border-radius:10px;background:#eef7ff;display:grid;place-items:center;font-size:24px}.qty{display:flex;align-items:center;gap:7px;margin-top:5px}.qty button{width:26px;height:26px;border-radius:7px;background:#eef2f6}.cartTotal{display:flex;justify-content:space-between;font-size:18px;font-weight:800;margin-top:16px}.storeHero{background:linear-gradient(115deg,#07111f,#0b2b55 65%,#1267d8);color:white;border-radius:18px;padding:26px;margin-bottom:18px}.storeHero p{color:#c8dcf4;max-width:680px}.verified{color:#039855;font-weight:700}.page{display:none}.page.active{display:block}.form{display:grid;gap:12px}.form label{font-size:13px;font-weight:700}.form input,.form select{width:100%;padding:11px;border:1px solid #d9e0e8;border-radius:9px;background:white}.result{background:#eff8ff;border:1px solid #b2ddff;border-radius:10px;padding:12px;font-size:13px;word-break:break-word}.modal{position:fixed;inset:0;background:#07111f99;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modalBox{background:white;border-radius:16px;width:min(500px,100%);padding:22px}.close{float:right;background:#eef2f6;border-radius:50%;width:30px;height:30px}.empty{padding:30px;text-align:center;color:#667085}
+@media(max-width:900px){.storeGrid{grid-template-columns:repeat(2,1fr)}.sidebar{width:72px}.sidebar .logo span,.sidebar .nav button span,.account{display:none}.logo{justify-content:center}.nav button{text-align:center}.stats{grid-template-columns:repeat(2,1fr)}.grid2,.grid3{grid-template-columns:1fr}.content{padding:18px}.hero h2{font-size:25px}}
+@media(max-width:560px){.storeGrid{grid-template-columns:1fr}.sidebar{display:none}.stats{grid-template-columns:1fr 1fr}.top{padding:0 16px}.content{padding:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo"><div class="logoMark"><span></span></div><span>CHAINBRIDGE</span></div>
+  <div class="nav">
+    <button class="active" onclick="showPage('dashboard',this)">⌂ <span>Dashboard</span></button>
+<button onclick="showPage('storefront',this)">🛍 <span>Storefront</span></button>
+    <button onclick="showPage('transactions',this)">⇄ <span>Transactions</span></button>
+    <button onclick="showPage('invoices',this)">▣ <span>Invoices</span></button>
+    <button onclick="showPage('payments',this)">◈ <span>Payments</span></button>
+    <button onclick="showPage('proof',this)">✓ <span>ChainProof</span></button>
+    <button onclick="showPage('trust',this)">★ <span>ChainTrust</span></button>
+  </div>
+  <div class="account"><strong>IslandCraft</strong>Business Account<br><span>Verified ✓</span></div>
+</aside>
+<main class="main">
+<header class="top"><h1 id="pageTitle">Business Dashboard</h1><span>● Network: Demo Chain</span></header>
+<div class="content">
+
+<section id="dashboard" class="page active">
+<div class="hero"><h2>Trust Across Every Transaction.</h2><p>ChainBridge gives your business one secure place to create invoices, accept payments, verify records and build a portable reputation.</p><button class="btn secondary" onclick="showPage('payments')">Create payment link</button></div>
+<div class="stats">
+<div class="card stat"><small>Total Balance</small><strong id="balance">$24,680.50</strong><span class="up">↑ 12.5% this month</span></div>
+<div class="card stat"><small>Transactions</small><strong id="txCount">1,248</strong><span class="up">↑ 18.2% this month</span></div>
+<div class="card stat"><small>Trust Score</small><strong>4.8 / 5</strong><span class="up">Excellent</span></div>
+<div class="card stat"><small>Active Customers</small><strong>532</strong><span class="up">↑ 22% this month</span></div>
+</div>
+<div class="grid2">
+<div class="card"><div class="sectionTitle"><h3>Recent transactions</h3><button class="btn" onclick="showPage('transactions')">View all</button></div><div id="recentTx"></div></div>
+<div class="card"><div class="sectionTitle"><h3>Trust Score</h3></div><div style="font-size:46px;font-weight:800">4.8<span style="font-size:20px;color:#667085"> / 5</span></div><p style="color:#667085">Based on verified transactions, delivery and dispute history.</p><div class="result">✓ Verified business identity<br>✓ 98% on-time fulfillment<br>✓ 0.8% dispute rate</div></div>
+</div>
+<div class="grid3" style="margin-top:18px">
+<div class="card product"><b>ChainPay</b><h4>Get paid faster</h4><p>Create payment links and QR codes for customers.</p><button class="btn" onclick="showPage('payments')">Open</button></div>
+<div class="card product"><b>ChainProof</b><h4>Verify your records</h4><p>Create tamper-evident receipts, certificates and delivery proofs.</p><button class="btn" onclick="showPage('proof')">Verify</button></div>
+<div class="card product"><b>ChainTrust</b><h4>Build reputation</h4><p>Turn verified business activity into portable customer trust.</p><button class="btn" onclick="showPage('trust')">Explore</button></div>
+</div>
+</section>
+
+
+<section id="storefront" class="page">
+  <div class="storeHero">
+    <div style="display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap">
+      <div>
+        <div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#7dc1ff;font-weight:800">CHAINBRIDGE STOREFRONT</div>
+        <h2 style="font-size:30px;margin:7px 0">IslandCraft <span style="font-size:16px;color:#7ee2a8">✓ Verified</span></h2>
+        <p>Handmade Caribbean goods from a verified business. Every completed order can receive a verifiable ChainProof receipt.</p>
+      </div>
+      <button class="btn secondary" onclick="openCart()">🛒 Cart <span class="cartBadge" id="cartBadge">0</span></button>
+    </div>
+  </div>
+
+  <div class="sectionTitle">
+    <div><h3>Featured products</h3><small style="color:#667085">Secure checkout • Verified business</small></div>
+    <button class="btn" onclick="openCart()">View cart (<span id="cartCountText">0</span>)</button>
+  </div>
+
+  <div class="storeGrid" id="productGrid"></div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="sectionTitle"><h3>Why buy from a verified ChainBridge business?</h3></div>
+    <div class="grid3">
+      <div><b>✓ Verified identity</b><p style="color:#667085;font-size:13px">Business information is verified before the store is marked trusted.</p></div>
+      <div><b>✓ Secure checkout</b><p style="color:#667085;font-size:13px">Payments and orders are tracked through the ChainBridge transaction flow.</p></div>
+      <div><b>✓ Verifiable receipt</b><p style="color:#667085;font-size:13px">Completed purchases can receive a tamper-evident ChainProof record.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="transactions" class="page">
+<div class="sectionTitle"><h3>Transactions</h3><button class="btn" onclick="addDemoTx()">＋ Add demo transaction</button></div>
+<div class="card"><table><thead><tr><th>Transaction</th><th>Customer</th><th>Amount</th><th>Status</th><th>Blockchain</th></tr></thead><tbody id="txTable"></tbody></table></div>
+</section>
+
+<section id="invoices" class="page">
+<div class="sectionTitle"><h3>Invoices</h3><button class="btn" onclick="newInvoice()">＋ New invoice</button></div>
+<div class="card"><table><thead><tr><th>Invoice</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead><tbody id="invoiceTable"></tbody></table></div>
+</section>
+
+<section id="payments" class="page">
+<div class="grid2">
+<div class="card"><div class="sectionTitle"><h3>Payment Link Generator</h3></div><div class="form">
+<label>Customer / description</label><input id="payDesc" placeholder="e.g. Handmade Caribbean basket">
+<label>Amount (USD)</label><input id="payAmount" type="number" min="1" step=".01" placeholder="150">
+<label>Settlement</label><select id="settlement"><option>USD</option><option>USDC</option><option>USDT</option></select>
+<button class="btn" onclick="createPayment()">Create secure payment link</button></div></div>
+<div class="card"><h3>Payment preview</h3><div id="paymentResult" class="empty">Your generated payment link will appear here.</div></div>
+</div>
+</section>
+
+<section id="proof" class="page">
+<div class="grid2">
+<div class="card"><h3>Create ChainProof record</h3><div class="form">
+<label>Record type</label><select id="proofType"><option>Invoice</option><option>Receipt</option><option>Certificate</option><option>Delivery Confirmation</option></select>
+<label>Reference / description</label><input id="proofDesc" placeholder="Order #10025">
+<button class="btn" onclick="createProof()">Anchor record on Demo Chain</button></div></div>
+<div class="card"><h3>Verification result</h3><div id="proofResult" class="empty">No record created yet.</div></div>
+</div>
+</section>
+
+<section id="trust" class="page">
+<div class="card"><h3>ChainTrust Business Reputation</h3><p style="color:#667085">A reputation score built from verifiable business activity instead of anonymous claims.</p>
+<div class="grid3">
+<div class="card"><small>Overall</small><strong style="font-size:34px">4.8 / 5</strong></div>
+<div class="card"><small>Verified transactions</small><strong style="font-size:34px">1,248</strong></div>
+<div class="card"><small>Dispute rate</small><strong style="font-size:34px">0.8%</strong></div>
+</div><br><div class="result">✓ Identity verified &nbsp; ✓ Payment history verified &nbsp; ✓ Fulfillment history verified</div></div>
+</section>
+
+</div></main></div>
+
+<div class="modal" id="cartModal">
+  <div class="modalBox">
+    <button class="close" onclick="closeCart()">×</button>
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <div class="cartTotal"><span>Total</span><span id="cartTotal">$0.00</span></div>
+    <button class="btn" style="width:100%;margin-top:16px" onclick="checkoutDemo()">Proceed to checkout</button>
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()">×</button><h3 id="modalTitle"></h3><div id="modalBody"></div></div></div>
+
+<script>
+const tx=[{id:"CB-8A42",customer:"John D.",amount:150,status:"Completed"},{id:"CB-91F0",customer:"CraftyCo.",amount:320,status:"Completed"},{id:"CB-71C3",customer:"Supplier",amount:-85.50,status:"Completed"},{id:"CB-2D19",customer:"Maria S.",amount:240,status:"Completed"}];
+const inv=[["INV-1024","John D.","$150.00","Paid"],["INV-1023","CraftyCo.","$320.00","Paid"],["INV-1022","Supplier","$85.50","Paid"],["INV-1021","Maria S.","$240.00","Paid"]];
+function showPage(id,btn){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");document.getElementById("pageTitle").textContent={dashboard:"Business Dashboard",storefront:"IslandCraft Storefront",transactions:"Transactions",invoices:"Invoices",payments:"ChainPay",proof:"ChainProof",trust:"ChainTrust"}[id]}
+function money(n){return (n<0?"-":"")+"$"+Math.abs(n).toFixed(2)}
+function render(){document.getElementById("recentTx").innerHTML=tx.slice(0,5).map(t=>`<div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #edf0f4"><span><b>${t.id}</b><br><small>${t.customer}</small></span><span style="text-align:right">${money(t.amount)}<br><span class="pill">${t.status}</span></span></div>`).join("");document.getElementById("txTable").innerHTML=tx.map(t=>`<tr><td><b>${t.id}</b></td><td>${t.customer}</td><td>${money(t.amount)}</td><td><span class="pill">${t.status}</span></td><td>✓ Verified</td></tr>`).join("");document.getElementById("invoiceTable").innerHTML=inv.map(i=>`<tr><td><b>${i[0]}</b></td><td>${i[1]}</td><td>${i[2]}</td><td><span class="pill">${i[3]}</span></td></tr>`).join("")}
+function addDemoTx(){tx.unshift({id:"CB-"+Math.random().toString(16).slice(2,6).toUpperCase(),customer:"New Customer",amount:Math.floor(Math.random()*400)+50,status:"Completed"});document.getElementById("txCount").textContent=(1248+tx.length-4).toLocaleString();render()}
+function newInvoice(){let id="INV-"+(1025+inv.length);inv.unshift([id,"New Customer","$125.00","Pending"]);
+const products = [
+  {id:"p1",name:"Caribbean Woven Basket",price:45,icon:"🧺",desc:"Handwoven island basket made for everyday use."},
+  {id:"p2",name:"Blue Mountain Gift Box",price:68,icon:"🎁",desc:"A curated gift set inspired by Jamaica."},
+  {id:"p3",name:"Island Artisan Candle",price:28,icon:"🕯️",desc:"Small-batch candle with a warm tropical scent."},
+  {id:"p4",name:"Handmade Beach Tote",price:52,icon:"👜",desc:"Durable handmade tote for beach days and travel."},
+  {id:"p5",name:"Caribbean Spice Set",price:34,icon:"🌶️",desc:"A selection of flavorful island-inspired spices."},
+  {id:"p6",name:"Palm Leaf Wall Art",price:75,icon:"🌿",desc:"Hand-finished botanical artwork for your home."}
+];
+let cart = [];
+
+function renderProducts(){
+  const grid=document.getElementById("productGrid");
+  if(!grid)return;
+  grid.innerHTML=products.map(p=>`
+    <div class="card storeCard">
+      <div class="productImg">${p.icon}</div>
+      <span class="verified">✓ Verified product</span>
+      <h4 style="margin:7px 0">${p.name}</h4>
+      <p>${p.desc}</p>
+      <div class="price">$${p.price.toFixed(2)}</div>
+      <button class="btn" onclick="addToCart('${p.id}')">Add to cart</button>
+    </div>`).join("");
+}
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  const item=cart.find(x=>x.id===id);
+  if(item)item.qty++; else cart.push({...p,qty:1});
+  updateCart();
+}
+function changeQty(id,delta){
+  const item=cart.find(x=>x.id===id);
+  if(!item)return;
+  item.qty+=delta;
+  if(item.qty<=0)cart=cart.filter(x=>x.id!==id);
+  updateCart();
+}
+function updateCart(){
+  const count=cart.reduce((s,x)=>s+x.qty,0);
+  const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  document.getElementById("cartBadge").textContent=count;
+  document.getElementById("cartCountText").textContent=count;
+  document.getElementById("cartTotal").textContent="$"+total.toFixed(2);
+  document.getElementById("cartItems").innerHTML=cart.length?cart.map(x=>`
+    <div class="cartItem">
+      <div class="cartIcon">${x.icon}</div>
+      <div style="flex:1"><b>${x.name}</b><br><small>$${x.price.toFixed(2)} each</small>
+      <div class="qty"><button onclick="changeQty('${x.id}',-1)">−</button><b>${x.qty}</b><button onclick="changeQty('${x.id}',1)">+</button></div></div>
+      <b>$${(x.price*x.qty).toFixed(2)}</b>
+    </div>`).join(""):'<div class="empty">Your cart is empty.<br>Add a product from the storefront.</div>';
+}
+function openCart(){document.getElementById("cartModal").classList.add("show");updateCart()}
+function closeCart(){document.getElementById("cartModal").classList.remove("show")}
+function checkoutDemo(){
+  if(!cart.length){alert("Your cart is empty.");return}
+  const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  closeCart();
+  openModal("Checkout ready",`<p>Your order total is <b>$${total.toFixed(2)}</b>.</p><div class="result">This prototype is ready for a real payment processor to be connected. No real payment is taken yet.</div><br><button class="btn" onclick="closeModal()">Continue shopping</button>`);
+}
+renderProducts();
+updateCart();
+
+render();openModal("Invoice created",`<p><b>${id}</b> is ready.</p><div class="result">Send the invoice and collect payment through ChainPay.</div>`)}
+function createPayment(){let d=document.getElementById("payDesc").value||"ChainBridge payment",a=Number(document.getElementById("payAmount").value)||0,c=document.getElementById("settlement").value;if(a<=0)return alert("Enter an amount.");let code="cb.me/pay/"+Math.random().toString(36).slice(2,10);document.getElementById("paymentResult").innerHTML=`<div class="result"><b>Payment link created</b><br><br>${d}<br><strong>${money(a)} ${c}</strong><br><br><code>${location.origin+location.pathname+"#"+code}</code><br><br><button class="btn" onclick="navigator.clipboard?.writeText('${location.origin+location.pathname}#${code}')">Copy link</button></div>`}
+async function createProof(){let d=document.getElementById("proofDesc").value||"Business record";let type=document.getElementById("proofType").value;let data=type+"|"+d+"|"+Date.now();let hash=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(data));let h=[...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,"0")).join("");document.getElementById("proofResult").innerHTML=`<div class="result"><b>✓ Record anchored</b><br><br>Type: ${type}<br>Reference: ${d}<br><br><small>Transaction hash</small><br><code>0x${h.slice(0,32)}...${h.slice(-8)}</code><br><br><span class="pill">VERIFIED ON DEMO CHAIN</span></div>`}
+function openModal(t,b){document.getElementById("modalTitle").textContent=t;document.getElementById("modalBody").innerHTML=b;document.getElementById("modal").classList.add("show")}function closeModal(){document.getElementById("modal").classList.remove("show")}
+render();
+</script>
+</body></html>
